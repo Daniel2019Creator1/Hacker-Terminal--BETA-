@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta name="description" content="Pokemon Card Maker II (PCM2) : Create your own custom Pokémon cards." />
+        <meta name="keywords" content="Pokemon, Card, Maker, Pokemon Card Maker, TCG, PCM, pokemoncardmaker.org, pokemoncardmaker, Generator, Pokemon Card Generator, Nintendo">
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>Pokemon Card Maker II</title>
+    <script src="/cdn-cgi/apps/head/IHFzlixsZ7wAyIgjR0N8CSEBHlU.js"></script><link rel="shortcut icon" href='https://forum.pokecard.net/favicon.ico' />
+        <!--[if IE]><script type="text/javascript" src="public/frameworks/excanvas.js"></script><![endif]-->
+        <link rel="stylesheet" href="public/stylesheets/main.css" />
+		<link rel="icon" type="image/png" href="public/media/icon.png" />
+		<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-52744828-1', 'auto');
+  ga('send', 'pageview');
+
+		</script>
+		<script>
+function toggleShow(sourceBox,toToggle,log,whenChecked,whenNotChecked){
+	//sourceBox = the checkbox to check
+	//toToggle = the element to show or hide
+	//log = what to say when toggling
+	//whenChecked = what to do when checked
+	//whenNotChecked = what to do when not checked
+	if (sourceBox.checked == true){
+		document.getElementById(toToggle).setAttribute("class",whenChecked);
+		console.log(log);
+	}
+	else{
+		document.getElementById(toToggle).setAttribute("class",whenNotChecked);
+		console.log(log);
+	}
+}
+function expandAtk(sourceBox){
+	if (sourceBox.checked == true){
+		document.getElementById("atkcont").style.height = "185px";
+	}
+	else{
+		document.getElementById("atkcont").style.height = "145px";
+	}
+}
+function rotate(rotation){
+	document.getElementById("rotavalue").innerHTML = rotation;
+	document.getElementById("image").style.webkittransform = "rotate("+rotation+"deg)";
+	document.getElementById("image").style.moztransform = "rotate("+rotation+"deg)";
+	document.getElementById("image").style.mstransform = "rotate("+rotation+"deg)";
+	document.getElementById("image").style.otransform = "rotate("+rotation+"deg)";
+	document.getElementById("image").style.transform = "rotate("+rotation+"deg)";
+}
+function imgxmod(val){
+	var img = document.getElementById("image");
+	img.style.paddingLeft = val;
+}
+function imgymod(val){
+	var img = document.getElementById("image");
+	img.style.paddingTop = val;
+}
+function imgmod(attrib,val){
+	var img = document.getElementById("image");
+	img.setAttribute(attrib,val);
+}
+function evomod(val){
+	var img = document.getElementById("evopic");
+	img.setAttribute("src",val);
+}
+
+function imgChange(imgURL){ 
+	var mainC=document.getElementById("cardtype"); 
+	var ctx=mainC.getContext("2d"); 
+	mainC.width = mainC.width;
+	var img = new Image(); 
+	img.src = "public/media/aschefield/"+imgURL; 
+	img.onload = function(){ 
+		ctx.drawImage(img,0,0); 
+	}
+	
+	if (document.getElementById("d1").checked == true || document.getElementById("d2").checked == true || document.getElementById("d3").checked == true){
+		fixDark("darkblank");
+	}
+	else{
+		fixDark("lightblank");
+	}
+}
+
+function fixDark(classSet){
+	document.getElementById("canvascontainer").setAttribute("class",classSet);
+}
+
+var typeIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //sometimes I disgust myself
+var cycleCount = 1;
+
+function cycleType(icon,iId){
+	var type = ["colourless",
+	"dark",
+	"fighting",
+	"fire",
+	"grass",
+	"lightning",
+	"metal",
+	"psychic",
+	"water",
+	"none"
+	];
+	
+	if (typeIndex[iId] < 9){
+		typeIndex[iId]++;
+		if(iId === 1 || iId === 6 || iId === 11){
+			if(type[typeIndex[iId]] === "none"){
+				type[typeIndex[iId]] = "free"
+			}
+		}
+	}else{
+		typeIndex[iId] = 0;
+	}
+	
+	icon.src = "public/media/icons/"+type[typeIndex[iId]]+".png";
+}
+function cycleRetreat(retreat){
+	var retImg = document.createElement("IMG");
+	retImg.src = "public/media/icons/colourless.png";
+	
+	if (cycleCount < 4){
+		retreat.appendChild(retImg); 
+		cycleCount++;
+		console.log(cycleCount);
+	}else{
+		retreat.innerHTML = "";
+		cycleCount = 0;
+	}
+}
+function energyAlignment(atkal){
+	document.getElementById("atkcont").setAttribute("class",atkal);
+}
+		</script>
+	</head>
+	<body>
+        <noscript>
+        	<div class="quote">
+            	<h1>Javascript must be enabled</h1>
+                <p>Sorry, but it appears that javascript on your browser isn't enabled. your browser needs to have javascript enabled to be able to run the card maker. </p>
+            </div>
+        </noscript>
+		<sub>Full Release v1.3.4 | Current path: <b>index</b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<script src="public/scripts/maindate.js"></script>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;Other pages: /support | <a href="forum/">/forum</a> | <a href="credits/">/credits</a> | <a href="compatibility">/compatibility</a> | <a href="legacy.html">legacy.html</a> | <a href="changelog.txt">changelog.txt</a></sub>
+		<br/><br/>
+		<div class="quote">
+			<div id="canvascontainer">
+				<div id="imagecont">
+					<img id="image"/>
+				</div>
+				<canvas id="cardtype" height="589" width="420">Your browser does not support the HTML5 canvas</canvas>
+				<div id="namebox">
+					<span id="name" contenteditable="true" spellcheck="false">Name</span><span id="lv" contenteditable="true" spellcheck="false">100</span>
+				</div>
+				<div id="healthbox">
+					<div id="health" contenteditable="true" spellcheck="false">100</div>
+				</div>
+				<div id="evolvesfrom" class="show" contenteditable="true" spellcheck="false">Name</div>
+				<div id="specs" contenteditable="true" spellcheck="false">No. 000 Blank Pokémon HT: 0'00" WT: 0.00 lbs.</div>
+				<img id="footline" src="public/media/specsline.png" class="show"/>
+				<div id="footer" contenteditable="true" spellcheck="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+				<div id="illus" contenteditable="true" spellcheck="false">Name of Illustrator</div>
+				<div id="filler"></div>
+				<div id="atkcont">
+					<div id="atkcontinner"><!-- Eww it's a lazy hack -->
+						<div id="atk1"  class="atk">
+							<div class="atkhead">
+								<span class="atktype"><img onclick="javascript:cycleType(this,1)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,2)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,3)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,4)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,5)" title="Click to change type" src="public/media/icons/colourless.png"
+								/></span>
+								<span class="atkname" contenteditable="true" spellcheck="false">Attack Name</span>
+								<span class="atkdmg" contenteditable="true" spellcheck="false">50</span>
+							</div>
+							<div class="atkdesc" contenteditable="true" spellcheck="false">
+								<span id="atk1desc">The description for the first attack of this Pokémon goes here. Click on the text to edit it. You can edit most text on the card maker by clicking on it and typing. Click on the energies to change the energy type.</span>
+							</div>
+						</div>
+						<div id="atk2" class="atk">
+							<div class="atkhead">
+								<span class="atktype"><img onclick="javascript:cycleType(this,6)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,7)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,8)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,9)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,10)" title="Click to change type" src="public/media/icons/colourless.png"
+								/></span>
+								<span class="atkname" contenteditable="true" spellcheck="false">Attack Name</span>
+								<span class="atkdmg" contenteditable="true" spellcheck="false">90</span>
+							</div>
+							<div class="atkdesc" contenteditable="true" spellcheck="false">
+								<span id="atk2desc">Attack description. Click on the text to edit it.</span>
+							</div>
+						</div>
+						<div id="atk3"  class="atk">
+							<div class="atkhead">
+								<span class="atktype"><img onclick="javascript:cycleType(this,11)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,12)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,13)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,14)" title="Click to change type" src="public/media/icons/colourless.png"
+								/><img onclick="javascript:cycleType(this,15)" title="Click to change type" src="public/media/icons/colourless.png"
+								/></span>
+								<span class="atkname" contenteditable="true" spellcheck="false">Attack Name</span>
+								<span class="atkdmg" contenteditable="true" spellcheck="false">90</span>
+							</div>
+							<div class="atkdesc" contenteditable="true" spellcheck="false">
+								<span id="atk3desc">Attack description. Click on the text to edit it.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<img id="evopic" class="show"/>
+				<div id="wrbox">
+					<div class="wrrc" id="weakness"><img onclick="javascript:cycleType(this,16)" title="Click to change type" src="public/media/icons/colourless.png"/><span contenteditable="true" spellcheck="false">+20</span></div>
+					<div class="wrrc" id="resistance"><img onclick="javascript:cycleType(this,17)" title="Click to change type" src="public/media/icons/colourless.png"/><span contenteditable="true" spellcheck="false">-20</span></div>
+					<div class="wrrc" id="retreat" onclick="javascript:cycleRetreat(this)" title="Click to add one"><img src="public/media/icons/colourless.png"/></div>
+				</div>
+			</div>
+        	<div id="infocontainer">
+        		<b>Card type:</b>
+        		<table id="types">
+					<tr>
+						<td><b>Basic:</b></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('colourless/basic.png');"/><img src="public/media/icons/colourless.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('dark/basic.png');" id="d1"/><img src="public/media/icons/dark.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fighting/basic.png');"/><img src="public/media/icons/fighting.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fire/basic.png');"/><img src="public/media/icons/fire.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('grass/basic.png');"/><img src="public/media/icons/grass.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('lightning/basic.png');"/><img src="public/media/icons/lightning.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('metal/basic.png');"/><img src="public/media/icons/metal.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('psychic/basic.png');"/><img src="public/media/icons/psychic.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('water/basic.png');"/><img src="public/media/icons/water.png"/></td>
+					</tr>
+					<tr>
+						<td><b>Stage 1:</b></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('colourless/s1.png');"/><img src="public/media/icons/colourless.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('dark/s1.png');" id="d2"/><img src="public/media/icons/dark.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fighting/s1.png');"/><img src="public/media/icons/fighting.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fire/s1.png');"/><img src="public/media/icons/fire.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('grass/s1.png');"/><img src="public/media/icons/grass.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('lightning/s1.png');"/><img src="public/media/icons/lightning.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('metal/s1.png');"/><img src="public/media/icons/metal.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('psychic/s1.png');"/><img src="public/media/icons/psychic.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('water/s1.png');"/><img src="public/media/icons/water.png"/></td>
+					</tr>
+					<tr>
+						<td><b>Stage 2:</b></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('colourless/s2.png');"/><img src="public/media/icons/colourless.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('dark/s2.png');" id="d3"/><img src="public/media/icons/dark.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fighting/s2.png');"/><img src="public/media/icons/fighting.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('fire/s2.png');"/><img src="public/media/icons/fire.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('grass/s2.png');"/><img src="public/media/icons/grass.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('lightning/s2.png')"/><img src="public/media/icons/lightning.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('metal/s2.png');"/><img src="public/media/icons/metal.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('psychic/s2.png');"/><img src="public/media/icons/psychic.png"/></td>
+						<td><input type="radio" name="blank" onChange="javascript:imgChange('water/s2.png');"/><img src="public/media/icons/water.png"/></td>
+					</tr>
+				</table>
+        		<hr/>
+        		<b>Show/hide card elements:</b><br/>
+        		<input type="checkbox" onchange="javascript:toggleShow(this,'evopic','Toggling evolution','hide','show');javascript:toggleShow(this,'evolvesfrom','','hide','show');"/>Disable evolution
+        		<input type="checkbox" onchange="javascript:toggleShow(this,'footer','Toggling footer','hide','show');javascript:toggleShow(this,'footline','Toggling footer...','hide','show');javascript:expandAtk(this)"/>Disable footer<br/>
+        		<input type="checkbox" onchange="javascript:toggleShow(this,'atk1','Toggling attack 1','hide','show');"/>Disable attack 1
+        		<input type="checkbox" onchange="javascript:toggleShow(this,'atk2','Toggling attack 2','hide','show');"/>Disable attack 2
+        		<input type="checkbox" onchange="javascript:toggleShow(this,'atk3','Toggling attack 3','hide','show');"/>Disable attack 3
+        		<hr/>
+        		<b>Card attack energy alignment:</b>
+        		<table>
+					<tr>
+						<td><input type="radio" name="attackenergy" onchange="javascript:energyAlignment('align3');"/> 3 energies</td>
+						<td><input type="radio" name="attackenergy" onchange="javascript:energyAlignment('align4');"/> 4 energies</td>
+						<td><input type="radio" name="attackenergy" onchange="javascript:energyAlignment('align5');"/> 5 energies</td>
+					</tr>
+				</table>
+        		<hr/>
+        		<div class="spacer"><b>Evolves from:</b><input onchange="javascript:evomod(this.value);" type="text" placeholder="Image URL" style="width:100%"/></div>
+        		<hr/>
+        		<b>Image properties:</b>
+        		<div class="spacer"><input onchange="javascript:imgmod('src',this.value);" type="text" placeholder="Image URL" style="width:100%"/></div>
+        		<div class="spacer">
+        			<table>
+						<tr>
+							<td><b>Starting X: </b></td>
+							<td><input onchange="javascript:imgxmod(this.value+'px');" class="small"/></td>
+						</tr>
+						<tr>
+							<td><b>Starting Y: </b></td>
+							<td><input onchange="javascript:imgymod(this.value+'px');" class="small"/></td>
+						</tr>
+						<tr>
+							<td><b>Height: </b></td>
+							<td><input onchange="javascript:imgmod('height',this.value+'px');" class="small"/></td>
+						</tr>
+						<tr>
+							<td><b>Width: </b></td>
+							<td><input onchange="javascript:imgmod('width',this.value+'px');" class="small"/></td>
+						</tr>
+        			</table>
+        		</div>
+        		<div class="spacer"><b>Rotation:</b> 0°<input type="range" name="rotation" onchange="javascript:rotate(this.value);" min="0" max="360" value="0" style="vertical-align:middle;" id="rotin" step="10"/>360° <b>Current value: </b><span id="rotavalue">0</span>°</div>
+        	</div>
+        </div>
+        <div id="chatContainer" style="position:fixed;top:10px;right:10px;text-align:right;max-width:220px;background-color:#FEFEFE;border-radius:4px;padding:5px;max-height:700px;box-shadow:0 0 4px rgba(0,0,0,0.4);">
+            <button onClick="javascript:openChat();">Open Chatbox</button><br/>
+        </div>
+        <script>
+function openChat(){
+    document.getElementById("chatContainer").innerHTML = '<button onClick="javascript:closeChat();">Close Chatbox</button><div><iframe id="chatBox" src="http://pcm2cb.chatango.com" style="min-height:400px;max-height:600px;width:100%;"></iframe></div>'
+            +'The official chat channel is pcm2cb<br/>'
+            +'<input id="channelBox"/><br/>'
+            +'<button onClick="javascript:changeChannel()">Change Chat Channel</button>';
+}
+function closeChat(){
+    document.getElementById("chatContainer").innerHTML = '<button onClick="javascript:openChat();">Open Chatbox</button>';
+}
+function changeChannel(){
+    var channel = channelBox.value;
+    document.getElementById("chatBox").src = 'http://'+channel+'.chatango.com';
+}
+        </script>
+		<div class="legal">
+			<hr/>
+			<span class="copyleft" title="Copyleft">©</span> 2012-2015 Pok&#233;mon Card Maker II. Pok&#233;mon Card Maker II is not affiliated with Nintendo, GameFreak, or any of its affiliates. Pokémon is <span class="copyright">©</span> 1996-2015 Pokémon/Nintendo. Graphics used in Pokémon Card Maker II are the property of their respective owners and may not be used or redistributed without their permission.<br/>
+		</div>
+	</body>
+</html>
